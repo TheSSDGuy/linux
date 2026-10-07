@@ -9,6 +9,7 @@ obj-$(CONFIG_NVME_RDMA)			+= nvme-rdma.o
 obj-$(CONFIG_NVME_FC)			+= nvme-fc.o
 obj-$(CONFIG_NVME_TCP)			+= nvme-tcp.o
 obj-$(CONFIG_NVME_APPLE)		+= nvme-apple.o
+obj-$(CONFIG_NVME_PLATFORM)		+= nvme-platform.o
 
 nvme-core-y				+= core.o ioctl.o sysfs.o pr.o
 nvme-core-$(CONFIG_NVME_VERBOSE_ERRORS)	+= constants.o
@@ -28,5 +29,7 @@ nvme-rdma-y				+= rdma.o
 nvme-fc-y				+= fc.o
 
 nvme-tcp-y				+= tcp.o
+
+nvme-platform-y				+= platform.o
 
 nvme-apple-y				+= apple.o

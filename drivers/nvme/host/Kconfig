@@ -122,6 +122,19 @@ config NVME_HOST_AUTH
 
 	  If unsure, say N.
 
+config NVME_PLATFORM
+	tristate "NVM Express controllers on the SoC interconnect"
+	depends on OF && BLOCK && HAS_DMA
+	select NVME_CORE
+	help
+	  This provides support for NVMe controllers that are not on PCI or
+	  PCI Express but directly on the interconnect of a SoC: the NVMe
+	  registers in a memory-mapped window, one interrupt line per vector,
+	  DMA as a bus manager, described in the device tree.
+
+	  To compile this driver as a module, choose M here: the module will
+	  be called nvme-platform.
+
 config NVME_APPLE
 	tristate "Apple ANS2 NVM Express host driver"
 	depends on OF && BLOCK

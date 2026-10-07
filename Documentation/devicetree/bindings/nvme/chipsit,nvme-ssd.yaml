@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+%YAML 1.2
+---
+$id: http://devicetree.org/schemas/nvme/chipsit,nvme-ssd.yaml#
+$schema: http://devicetree.org/meta-schemas/core.yaml#
+
+title: NVM Express controller on the SoC interconnect
+
+maintainers:
+  - Lorenzo Zuolo <lorenzo.zuolo@chips.it>
+
+description: |
+  An NVM Express controller that is not on PCI Express but directly on the
+  interconnect of a SoC. Everything NVM Express defines is unchanged: the
+  controller registers and the doorbells are at the offsets of BAR0 of a PCI
+  Express controller, in a memory-mapped window. In place of MSI-X, the
+  controller has one interrupt line per vector: line v is asserted while a
+  completion queue with interrupt vector v holds entries the host has not
+  consumed, and v is not masked in INTMS (the pin-based interrupt of the NVM
+  Express specification, per vector). The controller reads and writes host
+  memory as a bus manager.
+
+properties:
+  compatible:
+    const: chipsit,nvme-ssd
+
+  reg:
+    maxItems: 1
+    description:
+      Register window. NVMe registers at 0x0000, doorbells from 0x1000;
+      0x2000-0x3fff are reserved.
+
+  interrupts:
+    minItems: 1
+    maxItems: 32
+    description:
+      One interrupt per vector, vector 0 (admin completion queue) first.
+      With fewer lines than I/O queues, several queues share a vector.
+
+  dma-coherent: true
+
+  iommus:
+    maxItems: 1
+
+  resets:
+    maxItems: 1
+
+  clocks:
+    maxItems: 1
+
+required:
+  - compatible
+  - reg
+  - interrupts
+
+additionalProperties: false
+
+examples:
+  - |
+    soc {
+        #address-cells = <2>;
+        #size-cells = <2>;
+
+        nvme@40000000 {
+            compatible = "chipsit,nvme-ssd";
+            reg = <0x0 0x40000000 0x0 0x4000>;
+            interrupts = <52>, <53>, <54>, <55>, <56>;
+            dma-coherent;
+        };
+    };

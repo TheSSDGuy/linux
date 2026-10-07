@@ -319,6 +319,8 @@ patternProperties:
     description: Chipidea, Inc
   "^chipone,.*":
     description: ChipOne
+  "^chipsit,.*":
+    description: Fondazione Chips-IT
   "^chipspark,.*":
     description: ChipSPARK
   "^chongzhou,.*":
